@@ -5,6 +5,7 @@ from openpyxl import Workbook
 USERS_URL = "https://jsonplaceholder.typicode.com/users"
 OUTPUT_XLSX = "users.xlsx"
 TIMEOUT = 10
+HEADERS = ["id", "name", "email", "phone", "website", "company_name"]
 
 
 def fetch_users():
@@ -132,20 +133,10 @@ def save_rows_to_excel(rows):
         ws = wb.active
         ws.title = "users"
 
-        headers = ["id", "name", "email", "phone", "website", "company_name"]
-        ws.append(headers)
+        ws.append(HEADERS)
 
         for row in rows:
-            ws.append(
-                [
-                    row["id"],
-                    row["name"],
-                    row["email"],
-                    row["phone"],
-                    row["website"],
-                    row["company_name"],
-                ]
-            )
+            ws.append([row[h] for h in HEADERS])
 
         wb.save(OUTPUT_XLSX)
     except Exception as exc:
